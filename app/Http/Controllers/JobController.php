@@ -59,10 +59,10 @@ class JobController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
 
-        if (!$profile) {
+        if (!$profile || !$profile->Description || !$profile->SkillName) {
             return view('dashboard', [
                 'user' => $user,
-                'recommendedJobs' => [],
+                'recommendedJobs' => collect(), // Empty collection to avoid errors
             ]);
         }
 
@@ -74,12 +74,12 @@ class JobController extends Controller
 
         $skills = array_map('trim', explode(',', $profile->SkillName)); 
 
-        $recommendedJobs = Jobs::where(function($query) use ($disabilityMatches) {
+        $recommendedJobs = Jobs::where(function ($query) use ($disabilityMatches) {
             foreach ($disabilityMatches as $disability) {
                 $query->orWhere('SuitableFor', 'LIKE', "%$disability%");
             }
         })
-        ->orWhere(function($query) use ($skills) {
+        ->orWhere(function ($query) use ($skills) {
             foreach ($skills as $skill) {
                 $query->orWhere('RequiredSkills', 'LIKE', "%$skill%");
             }
