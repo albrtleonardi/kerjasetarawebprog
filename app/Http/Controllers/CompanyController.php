@@ -23,4 +23,10 @@ class CompanyController extends Controller
         $companies = Companies::all();
         return view('home', compact('companies'));
     }
+
+    public function show($CompanyID)
+    {
+        $company = Companies::with('jobs')->where('CompanyID', $CompanyID)->firstOrFail(); // Fetch the company by CompanyID
+        return view('companies.show', compact('company'));
+    }
 }

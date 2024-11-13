@@ -32,6 +32,7 @@
                             @endif
 
                             <h5 class="company-name">{{ $company->CompanyName }}</h5>
+                            <a href="{{ route('companies.show', $company->CompanyID) }}" class="btn btn-primary mt-3">View Details</a>
                         </div>
                     </div>
                 </div>

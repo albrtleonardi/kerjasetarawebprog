@@ -91,5 +91,12 @@ class JobController extends Controller
             'recommendedJobs' => $recommendedJobs,
         ]);
     }
+
+    public function show($JobID)
+    {
+        $job = Jobs::with('company')->where('JobID', $JobID)->firstOrFail(); 
+    
+        return view('jobs.show', compact('job'));
+    }
     
 }

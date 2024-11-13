@@ -104,7 +104,8 @@
                             <p><strong>Career Level:</strong> {{ $job->CareerLevel }}</p>
                             <p><strong>Suitable For:</strong> {{ $job->SuitableFor }}</p>
                             <p><strong>Salary:</strong> {{ $job->SalaryMin }} - {{ $job->SalaryMax }}</p>
-                        </div>
+                            <a href="{{ route('jobs.show', $job->JobID) }}" class="btn btn-primary mt-3">View Details</a>
+                            </div>
                     </div>
                 </div>
             @endforeach
