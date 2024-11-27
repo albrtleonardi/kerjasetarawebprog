@@ -30,9 +30,32 @@
         background-color: transparent;
         transition: background-color 0.3s ease-in-out;
     }
+
     #navbar.scrolled {
         background-color: white;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Default text color */
+    #navbar .nav-link {
+        color: white; /* Text color when navbar is transparent */
+        font-size: 0.875rem; /* Smaller text size for the menu items */
+        transition: color 0.3s ease-in-out;
+    }
+
+    /* Text color when navbar is scrolled (white background) */
+    #navbar.scrolled .nav-link {
+        color: blue; /* Text color changes to blue when scrolled */
+    }
+
+    /* Optional: Text color for the brand */
+    #navbar .navbar-brand {
+        color: white; /* Brand color when navbar is transparent */
+        font-size: 1.25rem; /* Adjust brand font size */
+    }
+
+    #navbar.scrolled .navbar-brand {
+        color: blue; /* Brand color changes to blue when scrolled */
     }
 </style>
 
@@ -41,7 +64,7 @@
         const navbar = document.getElementById("navbar");
 
         function handleScroll() {
-            const scrollThreshold = window.innerHeight * 0.1; // 10% dari tinggi viewport
+            const scrollThreshold = window.innerHeight * 0.1; // 10% of viewport height
             if (window.scrollY >= scrollThreshold) {
                 navbar.classList.add("scrolled");
             } else {
@@ -49,7 +72,7 @@
             }
         }
 
-        // Tambahkan event listener untuk scroll
+        // Add event listener for scroll
         window.addEventListener("scroll", handleScroll);
     });
 </script>
