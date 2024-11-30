@@ -5,120 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 
-    <link href="'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #003366;
+            --background-color: #f4f6f9;
+            --glass-background: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f6f9;
+            background: linear-gradient(135deg, #e0e4eb 0%, #f4f6f9 100%);
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.1); /* Transparent background */
-            border-radius: 15px;
+            background: var(--glass-background);
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(10px); /* Apply background blur */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.05), 
+                0 5px 15px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            max-width: 500px;
+            width: 100%;
         }
 
-        /* Make the Register text bigger and align it to the left */
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.08), 
+                0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
         .glass-card h3 {
-            font-size: 32px; /* Increase font size */
-            font-weight: 600;
-            text-align: left; /* Align text to the left */
-            color: #003366; /* Dark blue color */
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .form-group label {
             font-weight: 600;
-            color: #003366; /* Dark blue color */
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+            border-color: var(--primary-color);
         }
 
         .btn-primary {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             border: none;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .text-muted {
-            color: #003366; /* Dark blue color for muted text */
+            color: var(--secondary-color);
+            opacity: 0.7;
         }
 
-        /* Style error messages */
         .text-danger {
             font-size: 0.875rem;
             margin-top: 5px;
-            color: #b33030; /* Red color for errors */
+            color: #dc3545;
         }
 
-        /* Add some margin between the links and the form */
-        .text-center.mt-4 {
-            margin-top: 20px;
+        @media (max-width: 576px) {
+            .glass-card {
+                padding: 30px 25px;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-7 col-11">
-                <div class="card glass-card">
+                <div class="glass-card">
                     <div class="card-body">
                         <h3>Register</h3>
                         <form action="{{ route('register') }}" method="POST">
                             @csrf
-                            <!-- Username Field -->
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" name="UserName" id="username" class="form-control" placeholder="Enter your username" required>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0">
+                                            <i class="fas fa-user text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="UserName" id="username" class="form-control border-left-0" placeholder="Enter your username" required>
+                                </div>
                             </div>
 
-                            <!-- Email Field -->
                             <div class="form-group">
                                 <label for="email">Email address</label>
-                                <input type="email" name="Email" id="email" class="form-control" placeholder="Enter your email" required>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0">
+                                            <i class="fas fa-envelope text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <input type="email" name="Email" id="email" class="form-control border-left-0" placeholder="Enter your email" required>
+                                </div>
                             </div>
 
-                            <!-- Password Field -->
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" name="Password" id="password" class="form-control" placeholder="Enter your password" required>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <input type="password" name="Password" id="password" class="form-control border-left-0" placeholder="Enter your password" required>
+                                </div>
                             </div>
 
-                            <!-- Password Confirmation Field -->
                             <div class="form-group">
                                 <label for="password_confirmation">Confirm Password</label>
-                                <input type="password" name="Password_confirmation" id="password_confirmation" class="form-control" placeholder="Confirm your password" required>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <input type="password" name="Password_confirmation" id="password_confirmation" class="form-control border-left-0" placeholder="Confirm your password" required>
+                                </div>
                             </div>
 
-                            <!-- Register Button -->
-                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Register</button>
                         </form>
                     </div>
                     <div class="text-center mt-4">
-                    <p class="text-muted">Already have an account? <a href="{{ route('login') }}" class="font-weight-bold">Login</a></p>
+                        <p class="text-muted">Already have an account? <a href="{{ route('login') }}" class="font-weight-bold">Login</a></p>
+                    </div>
                 </div>
-                </div>
-
-
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
