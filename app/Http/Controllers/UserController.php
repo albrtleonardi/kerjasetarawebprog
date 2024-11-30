@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jobs;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class UserController extends Controller
         $user = User::create([
             'UserName' => $request->UserName,
             'Email' => $request->Email,
-            'Password' => Hash::make($request->Password), 
+            'Password' => Hash::make($request->Password),
         ]);
 
         Auth::login($user);
@@ -70,6 +71,46 @@ class UserController extends Controller
 
     public function dashboard()
 {
-    return view('dashboard', ['user' => Auth::user()]);
+    $user = Auth::user();
+    $profile = $user->profile;
+    $roles = Jobs::select('Role')->distinct()->get();
+
+    // if (!$profile || !$profile->Description || !$profile->SkillName) {
+    //     return view('dashboard', [
+    //         'user' => $user,
+    //         'recommendedJobs' => collect(), // Empty collection to avoid errors
+    //     ]);
+    // }
+
+    $disabilities = ['Wheelchair', 'Deaf', 'Visual Impairment', 'Dyslexia', 'Hearing Impaired', 'Low Vision'];
+
+    $disabilityMatches = array_filter($disabilities, function($disability) use ($profile) {
+        return stripos($profile->Description, $disability) !== false;
+    });
+
+    $skills = array_map('trim', explode(',', $profile->SkillName));
+
+    $recommendedJobs = Jobs::where(function ($query) use ($disabilityMatches) {
+        foreach ($disabilityMatches as $disability) {
+            $query->orWhere('SuitableFor', 'LIKE', "%$disability%");
+        }
+    })
+    ->orWhere(function ($query) use ($skills) {
+        foreach ($skills as $skill) {
+            $query->orWhere('RequiredSkills', 'LIKE', "%$skill%");
+        }
+    })
+    ->get();
+
+
+    // Pass both recommendedJobs and roles to the view correctly
+    return view('dashboard', [
+        'user' => $user,
+        'roles' => $roles,
+        'recommendedJobs' => $recommendedJobs,
+        'disabilities' => $disabilities
+    ]);
 }
+
+
 }

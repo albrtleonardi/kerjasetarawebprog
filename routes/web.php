@@ -25,7 +25,7 @@ Route::get('/companies', [CompanyController::class, 'index'])->name('companies.i
 Route::get('/', [CompanyController::class, 'showListCompanies'])->name('home');
 
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-Route::get('/dashboard', [JobController::class, 'recommendedJobs'])->name('dashboard');
+// Route::get('/dashboard', [JobController::class, 'recommendedJobs'])->name('dashboard');
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
