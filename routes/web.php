@@ -32,3 +32,11 @@ Route::put('/profile', [ProfileController::class, 'update'])->name('profile.upda
 
 Route::get('/jobs/{JobID}', [JobController::class, 'show'])->name('jobs.show');
 Route::get('/companies/{CompanyID}', [CompanyController::class, 'show'])->name('companies.show');
+
+Route::get('/about', function () {
+    if (!Auth::check()) {
+        return redirect('/login'); // Redirect to the login page if the user is not authenticated
+    }
+
+    return view('user.about'); // Show the about page for authenticated users
+})->middleware('auth')->name('about');

@@ -269,6 +269,7 @@
     <div class="mt-4 mb-4">
         <a href="{{ route('profile.show') }}" class="btn btn-info">Show Profile</a>
         <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profile</a>
+        <a href="{{ route('about') }}" class="btn btn-primary">About Us</a>
         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
             @csrf
             <button type="submit" class="btn btn-danger">Logout</button>
