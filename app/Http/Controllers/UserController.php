@@ -76,14 +76,17 @@ class UserController extends Controller
     $roles = Jobs::select('Role')->distinct()->get();
     $jobs = Jobs::all();
 
-    // if (!$profile || !$profile->Description || !$profile->SkillName) {
-    //     return view('dashboard', [
-    //         'user' => $user,
-    //         'recommendedJobs' => collect(), // Empty collection to avoid errors
-    //     ]);
-    // }
-
     $disabilities = ['Wheelchair', 'Deaf', 'Visual Impairment', 'Dyslexia', 'Hearing Impaired', 'Low Vision'];
+
+    if (!$profile || !$profile->Description || !$profile->SkillName) {
+        return view('dashboard', [
+            'user' => $user,
+            'roles' => $roles,
+            'recommendedJobs' => collect(), // Empty collection to avoid errors
+            'disabilities' => $disabilities,
+            'jobs' => $jobs,
+        ]);
+    }
 
     $disabilityMatches = array_filter($disabilities, function($disability) use ($profile) {
         return stripos($profile->Description, $disability) !== false;
@@ -103,8 +106,6 @@ class UserController extends Controller
     })
     ->get();
 
-
-    // Pass both recommendedJobs and roles to the view correctly
     return view('dashboard', [
         'user' => $user,
         'roles' => $roles,
