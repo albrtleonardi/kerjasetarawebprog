@@ -343,34 +343,16 @@
 
   </style>
 
-<div class="search-bar">
-    <div class="prompt">Pekerjaan apa yang kamu cari?</div>
-    <div class="search-container">
-      <input type="text" class="search-input" placeholder="Search...">
-      <input type="text" class="location-input" placeholder="Location...">
-      <button class="search-btn">Cari</button>
-    </div>
-  </div>
 
-<div class="container my-4">
+<div class="container mt-5">
 <h1>Welcome, {{ $user->UserName }}</h1>
-
-<div class="mt-4 mb-4">
-    <a href="{{ route('profile.show') }}" class="btn btn-info">Show Profile</a>
-    <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profile</a>
-    <a href="{{ route('about') }}" class="btn btn-primary">About Us</a>
-    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-        @csrf
-        <button type="submit" class="btn btn-danger">Logout</button>
-    </form>
-</div>
 
 <h2>Recommended Jobs for You</h2>
 @if($recommendedJobs->isEmpty())
     <p>No job recommendations available at this time.</p>
 @else
     <div class="row">
-        @foreach($recommendedJobs as $job)
+        @foreach($recommendedJobs->take(3) as $job)
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
@@ -403,84 +385,6 @@
   <button class="carousel-button" id="next">❯</button>
 </div>
 </div>
-
-
-{{-- JOB ROLES --}}
-<div class="section-title">
-<h2>Posisi Pekerjaan</h2>
-<p>Jelajahi berbagai posisi pekerjaan untuk menemukan yang paling sesuai dengan Anda.</p>
-</div>
-{{-- <section class="job-roles">
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Developer');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Developer</h3>
-    <p>Build and maintain software applications.</p>
-  </div>
-</div>
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Designer');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Designer</h3>
-    <p>Create visually appealing designs and layouts.</p>
-  </div>
-</div>
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Manager');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Manager</h3>
-    <p>Oversee team operations and ensure project success.</p>
-  </div>
-</div>
-</section> --}}
-
-@if ($roles->isEmpty())
-<div>no role</div>
-<section class="job-roles">
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Developer');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Developer</h3>
-    <p>Build and maintain software applications.</p>
-  </div>
-</div>
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Designer');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Designer</h3>
-    <p>Create visually appealing designs and layouts.</p>
-  </div>
-</div>
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Manager');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Manager</h3>
-    <p>Oversee team operations and ensure project success.</p>
-  </div>
-</div>
-</section>
-@else <section class="job-roles">
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
-        <div class="overlay"></div>
-        <div class="content">
-            <h3>{{ $role->Role }}</h3>
-        </div>
-    </div>
-</section>
-
-@foreach ($roles as $role)
-<section class="job-roles">
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
-        <div class="overlay"></div>
-        <div class="content">
-            <h3>{{ $role->Role }}</h3>
-        </div>
-    </div>
-</section>
-@endforeach
-
-@endif
-
 
 
 {{-- DISABILITIES --}}
@@ -586,7 +490,7 @@
     </div>
   </div>
 @else
-    @foreach ($jobs as $job)
+    @foreach ($jobs->take(4) as $job)
     <a href="/jobs/{{ $job->JobID }}" class="job-highlight-section">
     <div class="job-listings">
         <div class="job-card">
