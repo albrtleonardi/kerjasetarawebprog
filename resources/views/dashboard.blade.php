@@ -341,6 +341,22 @@
   color: #999;
 }
 
+.job-listings {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 20px; /* Space between items */
+    justify-items: center; /* Centers each item horizontally */
+    align-items: center; /* Centers each item vertically */
+}
+
+.job-listings-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+
   </style>
 
 
@@ -387,6 +403,11 @@
 </div>
 
 
+
+
+
+
+
 {{-- DISABILITIES --}}
 <div class="section-title">
     <h2>Cocok untuk Disabilitas</h2>
@@ -431,82 +452,34 @@
 
 
 <div class="section-title">
-<h2>Lowongan Kerja Pilihan</h2>
-<p>Jelajahi peluang kerja yang tersedia dan temukan pekerjaan yang tepat untuk Anda.</p>
+    <h2>Lowongan Kerja Pilihan</h2>
+    <p>Jelajahi peluang kerja yang tersedia dan temukan pekerjaan yang tepat untuk Anda.</p>
 </div>
 
-@if ($jobs->isEmpty())
-  <div>no job</div>
-  <div class="job-highlight-section">
-    <div class="job-listings">
-      <div class="job-card">
-        <h4>Trainer Smartfren SEJ</h4>
-        <p>PT Smart Telecom</p>
-        <p class="salary">Gaji di atas ekspektasi</p>
-        <p class="location">Malang</p>
-        <span class="match-score">10% cocok</span>
-        <p class="date">1 Des 2024</p>
-      </div>
-      <div class="job-card">
-        <h4>Area Sales Coordinator</h4>
-        <p>PT Smart Telecom</p>
-        <p class="salary">Gaji di atas ekspektasi</p>
-        <p class="location">Prov. Jawa Tengah</p>
-        <span class="match-score">10% cocok</span>
-        <p class="date">14 Okt 2024</p>
-      </div>
-      <div class="job-card">
-        <h4>Area Sales Coordinator</h4>
-        <p>PT Smart Telecom</p>
-        <p class="salary">Gaji di atas ekspektasi</p>
-        <p class="location">Prov. Jawa Tengah</p>
-        <span class="match-score">10% cocok</span>
-        <p class="date">14 Okt 2024</p>
-      </div>
-      <div class="job-card">
-        <h4>Area Sales Coordinator</h4>
-        <p>PT Smart Telecom</p>
-        <p class="salary">Gaji di atas ekspektasi</p>
-        <p class="location">Prov. Jawa Tengah</p>
-        <span class="match-score">10% cocok</span>
-        <p class="date">14 Okt 2024</p>
-      </div>
-      <div class="job-card">
-        <h4>Area Sales Coordinator</h4>
-        <p>PT Smart Telecom</p>
-        <p class="salary">Gaji di atas ekspektasi</p>
-        <p class="location">Prov. Jawa Tengah</p>
-        <span class="match-score">10% cocok</span>
-        <p class="date">14 Okt 2024</p>
-      </div>
-      <div class="job-card">
-        <h4>Area Sales Coordinator</h4>
-        <p>PT Smart Telecom</p>
-        <p class="salary">Gaji di atas ekspektasi</p>
-        <p class="location">Prov. Jawa Tengah</p>
-        <span class="match-score">10% cocok</span>
-        <p class="date">14 Okt 2024</p>
-      </div>
-    </div>
-  </div>
-@else
-    @foreach ($jobs->take(4) as $job)
-    <a href="/jobs/{{ $job->JobID }}" class="job-highlight-section">
-    <div class="job-listings">
-        <div class="job-card">
-        <h4>{{ $job->Role }}</h4>
-        <p> <a href="/companies/{{ $job->company->CompanyID }}" class="company-link">
-            {{ $job->company->CompanyName ?? 'Unknown' }}
-        </a></p>
-        <p class="salary">{{ $job->SalaryMin }}</p>
-        {{-- <p class="location">Malang</p> --}}
-        {{-- <span class="match-score">10% cocok</span> --}}
-        <p class="date">{{ $job->company->CompanyName ?? 'Unknown' }}</p>
+<div class="job-listings-container">
+    @if ($jobs->isEmpty())
+        <div>No jobs available.</div>
+    @else
+        <div class="row d-flex justify-content-center">
+            @foreach ($jobs->take(4) as $job) <!-- Limit to 4 jobs to show 2x2 grid -->
+                <div class="col-md-3 mb-4 d-flex justify-content-center">
+                    <a href="/jobs/{{ $job->JobID }}">
+                        <div class="job-card text-center">
+                            <h4>{{ $job->Role }}</h4>
+                            <p><a href="/companies/{{ $job->company->CompanyID }}" class="company-link">
+                                {{ $job->company->CompanyName ?? 'Unknown' }}
+                            </a></p>
+                            <p class="salary">{{ $job->SalaryMin }}</p>
+                            <p class="date">{{ $job->company->CompanyName ?? 'Unknown' }}</p>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
         </div>
-    </div>
-    </a>
-    @endforeach
-@endif
+    @endif
+</div>
+
+
 
 <script>
 const track = document.querySelector('.carousel-track');

@@ -20,7 +20,8 @@ Route::get('dashboard', function () {
 
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 
-Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
+// Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
+Route::get('/companies', [CompanyController::class, 'listing'])->name('companies.index');
 
 Route::get('/', [CompanyController::class, 'showListCompanies'])->name('home');
 
