@@ -74,6 +74,7 @@ class UserController extends Controller
     $user = Auth::user();
     $profile = $user->profile;
     $roles = Jobs::select('Role')->distinct()->get();
+    $jobs = Jobs::all();
 
     // if (!$profile || !$profile->Description || !$profile->SkillName) {
     //     return view('dashboard', [
@@ -108,7 +109,8 @@ class UserController extends Controller
         'user' => $user,
         'roles' => $roles,
         'recommendedJobs' => $recommendedJobs,
-        'disabilities' => $disabilities
+        'disabilities' => $disabilities,
+        'jobs' => $jobs,
     ]);
 }
 

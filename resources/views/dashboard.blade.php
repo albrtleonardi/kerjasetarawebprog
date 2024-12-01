@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.without_sidebar')
+
+@section('content')
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -16,17 +16,19 @@
     }
 
     .search-bar {
-      background-color: #007bff; /* Blue background */
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      color: white;
-    }
+    height: 15vh;
+    background-color: #007bff; /* Blue background */
+    padding: 20px;
+    display: flex;
+    align-items: flex-end;
+    color: white;
+}
 
     .search-bar .prompt {
         margin-left: 10vw;
       margin-right: 20px;
-      font-size: 16px;
+      margin-bottom: 0.5vh;
+      font-size: 1.25rem;
     }
 
     .search-bar .search-container {
@@ -246,233 +248,395 @@
   line-height: 1.6; /* Better line spacing for readability */
 }
 
+.job-highlight-section {
+    margin-left: 10vw;
+    margin-right: 10vw;
+  display: flex;
+  gap: 20px;
+}
 
+.carousel {
+  flex: 1;
+}
+
+.carousel-item {
+  position: relative;
+  border: 2px solid #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.promo-image img {
+  width: 100%;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.promo-content {
+  padding: 20px;
+}
+
+.promo-content h2 {
+  font-size: 24px;
+  color: #fff;
+}
+
+.promo-content h3 {
+  font-size: 18px;
+  color: #000;
+}
+
+.apply-now {
+  padding: 10px 20px;
+  background-color: #ff9800;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.job-listings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between cards */
+  justify-content: center; /* Center align the cards */
+}
+
+.job-card {
+  width: 40vh;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  transition: transform 0.3s ease; /* Hover animation */
+}
+
+.job-card:hover {
+  transform: scale(1.05);
+}
+
+
+.job-card h4 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.salary {
+  color: green;
+  font-weight: bold;
+}
+
+.match-score {
+  background: #ff4d4f;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.date {
+  font-size: 12px;
+  color: #999;
+}
 
   </style>
 
-
-<body>
-
-
-    <div class="search-bar">
-        <div class="prompt">Pekerjaan apa yang kamu cari?</div>
-        <div class="search-container">
-          <input type="text" class="search-input" placeholder="Search...">
-          <input type="text" class="location-input" placeholder="Location...">
-          <button class="search-btn">Cari</button>
-        </div>
-      </div>
-
-<div class="container my-4">
-    <h1>Welcome, {{ $user->UserName }}</h1>
-
-    <div class="mt-4 mb-4">
-        <a href="{{ route('profile.show') }}" class="btn btn-info">Show Profile</a>
-        <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profile</a>
-        <a href="{{ route('about') }}" class="btn btn-primary">About Us</a>
-        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-            @csrf
-            <button type="submit" class="btn btn-danger">Logout</button>
-        </form>
-    </div>
-
-    <h2>Recommended Jobs for You</h2>
-    @if($recommendedJobs->isEmpty())
-        <p>No job recommendations available at this time.</p>
-    @else
-        <div class="row">
-            @foreach($recommendedJobs as $job)
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="job-title">{{ $job->Role }}</h5>
-                            <p><strong>Company:</strong> {{ $job->company->CompanyName ?? 'Unknown' }}</p>
-                            <p><strong>Suitable For:</strong> {{ $job->SuitableFor }}</p>
-                            <p><strong>Required Skills:</strong> {{ $job->RequiredSkills }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
-</div>
-
-<div class="carousel">
-    <div class="carousel-track">
-      <div class="carousel-slide">
-        <img src="https://via.placeholder.com/600x300?text=Slide+1" alt="Slide 1">
-      </div>
-      <div class="carousel-slide">
-        <img src="https://via.placeholder.com/600x300?text=Slide+2" alt="Slide 2">
-      </div>
-      <div class="carousel-slide">
-        <img src="https://via.placeholder.com/600x300?text=Slide+3" alt="Slide 3">
-      </div>
-    </div>
-    <div class="carousel-controls">
-      <button class="carousel-button" id="prev">❮</button>
-      <button class="carousel-button" id="next">❯</button>
+<div class="search-bar">
+    <div class="prompt">Pekerjaan apa yang kamu cari?</div>
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Search...">
+      <input type="text" class="location-input" placeholder="Location...">
+      <button class="search-btn">Cari</button>
     </div>
   </div>
 
+<div class="container my-4">
+<h1>Welcome, {{ $user->UserName }}</h1>
 
-  {{-- JOB ROLES --}}
-  <div class="section-title">
-    <h2>Peran Pekerjaan</h2>
-    <p>Jelajahi berbagai peran pekerjaan untuk menemukan yang paling sesuai dengan Anda.</p>
+<div class="mt-4 mb-4">
+    <a href="{{ route('profile.show') }}" class="btn btn-info">Show Profile</a>
+    <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profile</a>
+    <a href="{{ route('about') }}" class="btn btn-primary">About Us</a>
+    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
 </div>
-  {{-- <section class="job-roles">
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Developer');">
-      <div class="overlay"></div>
-      <div class="content">
-        <h3>Developer</h3>
-        <p>Build and maintain software applications.</p>
-      </div>
-    </div>
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Designer');">
-      <div class="overlay"></div>
-      <div class="content">
-        <h3>Designer</h3>
-        <p>Create visually appealing designs and layouts.</p>
-      </div>
-    </div>
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Manager');">
-      <div class="overlay"></div>
-      <div class="content">
-        <h3>Manager</h3>
-        <p>Oversee team operations and ensure project success.</p>
-      </div>
-    </div>
-  </section> --}}
 
-  @if ($roles->isEmpty())
-  <div>no role</div>
-  <section class="job-roles">
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Developer');">
-      <div class="overlay"></div>
-      <div class="content">
-        <h3>Developer</h3>
-        <p>Build and maintain software applications.</p>
-      </div>
-    </div>
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Designer');">
-      <div class="overlay"></div>
-      <div class="content">
-        <h3>Designer</h3>
-        <p>Create visually appealing designs and layouts.</p>
-      </div>
-    </div>
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Manager');">
-      <div class="overlay"></div>
-      <div class="content">
-        <h3>Manager</h3>
-        <p>Oversee team operations and ensure project success.</p>
-      </div>
-    </div>
-  </section>
-  @else <section class="job-roles">
-        <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
-            <div class="overlay"></div>
-            <div class="content">
-                <h3>{{ $role->Role }}</h3>
+<h2>Recommended Jobs for You</h2>
+@if($recommendedJobs->isEmpty())
+    <p>No job recommendations available at this time.</p>
+@else
+    <div class="row">
+        @foreach($recommendedJobs as $job)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="job-title">{{ $job->Role }}</h5>
+                        <p><strong>Company:</strong> {{ $job->company->CompanyName ?? 'Unknown' }}</p>
+                        <p><strong>Suitable For:</strong> {{ $job->SuitableFor }}</p>
+                        <p><strong>Required Skills:</strong> {{ $job->RequiredSkills }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
-
-  @foreach ($roles as $role)
-    <section class="job-roles">
-        <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
-            <div class="overlay"></div>
-            <div class="content">
-                <h3>{{ $role->Role }}</h3>
-            </div>
-        </div>
-    </section>
-    @endforeach
-
-  @endif
-
-
-
-    {{-- DISABILITIES --}}
-    <div class="section-title">
-        <h2>Cocok untuk Disabilitas</h2>
-        <p>Temukan peran yang disesuaikan untuk berbagai jenis disabilitas.</p>
+        @endforeach
     </div>
+@endif
+</div>
+
+<div class="carousel">
+<div class="carousel-track">
+  <div class="carousel-slide">
+    <img src="https://via.placeholder.com/600x300?text=Slide+1" alt="Slide 1">
+  </div>
+  <div class="carousel-slide">
+    <img src="https://via.placeholder.com/600x300?text=Slide+2" alt="Slide 2">
+  </div>
+  <div class="carousel-slide">
+    <img src="https://via.placeholder.com/600x300?text=Slide+3" alt="Slide 3">
+  </div>
+</div>
+<div class="carousel-controls">
+  <button class="carousel-button" id="prev">❮</button>
+  <button class="carousel-button" id="next">❯</button>
+</div>
+</div>
 
 
-  <div class="suitable-section">
-    @foreach ($disabilities as $disability)
-        <div class="suitable-item">
+{{-- JOB ROLES --}}
+<div class="section-title">
+<h2>Posisi Pekerjaan</h2>
+<p>Jelajahi berbagai posisi pekerjaan untuk menemukan yang paling sesuai dengan Anda.</p>
+</div>
+{{-- <section class="job-roles">
+<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Developer');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h3>Developer</h3>
+    <p>Build and maintain software applications.</p>
+  </div>
+</div>
+<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Designer');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h3>Designer</h3>
+    <p>Create visually appealing designs and layouts.</p>
+  </div>
+</div>
+<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Manager');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h3>Manager</h3>
+    <p>Oversee team operations and ensure project success.</p>
+  </div>
+</div>
+</section> --}}
+
+@if ($roles->isEmpty())
+<div>no role</div>
+<section class="job-roles">
+<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Developer');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h3>Developer</h3>
+    <p>Build and maintain software applications.</p>
+  </div>
+</div>
+<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Designer');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h3>Designer</h3>
+    <p>Create visually appealing designs and layouts.</p>
+  </div>
+</div>
+<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Manager');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h3>Manager</h3>
+    <p>Oversee team operations and ensure project success.</p>
+  </div>
+</div>
+</section>
+@else <section class="job-roles">
+    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
+        <div class="overlay"></div>
         <div class="content">
-            <h3>{{ $disability }}</h3>
-            <p>Roles suitable for individuals with {{ strtolower($disability) }} impairments.</p>
+            <h3>{{ $role->Role }}</h3>
         </div>
+    </div>
+</section>
+
+@foreach ($roles as $role)
+<section class="job-roles">
+    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
+        <div class="overlay"></div>
+        <div class="content">
+            <h3>{{ $role->Role }}</h3>
         </div>
-    @endforeach
+    </div>
+</section>
+@endforeach
+
+@endif
+
+
+
+{{-- DISABILITIES --}}
+<div class="section-title">
+    <h2>Cocok untuk Disabilitas</h2>
+    <p>Temukan posisi yang disesuaikan untuk berbagai jenis disabilitas.</p>
+</div>
+
+
+<div class="suitable-section">
+@foreach ($disabilities as $disability)
+    <div class="suitable-item">
+    <div class="content">
+        <h3>{{ $disability }}</h3>
+        <p>Posisi yang cocok untuk individu dengan disabilitas <strong>{{ strtolower($disability) }}</strong>.</p>
+    </div>
+    </div>
+@endforeach
 </div>
 
 
 
 
-  {{-- <div class="suitable-section">
-    <div class="suitable-item">
-      <div class="content">
-        <h3>Vision Impairment</h3>
-        <p>Roles suitable for individuals with vision impairments.</p>
+{{-- <div class="suitable-section">
+<div class="suitable-item">
+  <div class="content">
+    <h3>Vision Impairment</h3>
+    <p>Roles suitable for individuals with vision impairments.</p>
+  </div>
+</div>
+<div class="suitable-item">
+  <div class="content">
+    <h3>Hearing Impairment</h3>
+    <p>Roles suitable for individuals with hearing impairments.</p>
+  </div>
+</div>
+<div class="suitable-item">
+  <div class="content">
+    <h3>Mobility Impairment</h3>
+    <p>Roles suitable for individuals with mobility impairments.</p>
+  </div>
+</div>
+</div> --}}
+
+
+<div class="section-title">
+<h2>Lowongan Kerja Pilihan</h2>
+<p>Jelajahi peluang kerja yang tersedia dan temukan pekerjaan yang tepat untuk Anda.</p>
+</div>
+
+@if ($jobs->isEmpty())
+  <div>no job</div>
+  <div class="job-highlight-section">
+    <div class="job-listings">
+      <div class="job-card">
+        <h4>Trainer Smartfren SEJ</h4>
+        <p>PT Smart Telecom</p>
+        <p class="salary">Gaji di atas ekspektasi</p>
+        <p class="location">Malang</p>
+        <span class="match-score">10% cocok</span>
+        <p class="date">1 Des 2024</p>
+      </div>
+      <div class="job-card">
+        <h4>Area Sales Coordinator</h4>
+        <p>PT Smart Telecom</p>
+        <p class="salary">Gaji di atas ekspektasi</p>
+        <p class="location">Prov. Jawa Tengah</p>
+        <span class="match-score">10% cocok</span>
+        <p class="date">14 Okt 2024</p>
+      </div>
+      <div class="job-card">
+        <h4>Area Sales Coordinator</h4>
+        <p>PT Smart Telecom</p>
+        <p class="salary">Gaji di atas ekspektasi</p>
+        <p class="location">Prov. Jawa Tengah</p>
+        <span class="match-score">10% cocok</span>
+        <p class="date">14 Okt 2024</p>
+      </div>
+      <div class="job-card">
+        <h4>Area Sales Coordinator</h4>
+        <p>PT Smart Telecom</p>
+        <p class="salary">Gaji di atas ekspektasi</p>
+        <p class="location">Prov. Jawa Tengah</p>
+        <span class="match-score">10% cocok</span>
+        <p class="date">14 Okt 2024</p>
+      </div>
+      <div class="job-card">
+        <h4>Area Sales Coordinator</h4>
+        <p>PT Smart Telecom</p>
+        <p class="salary">Gaji di atas ekspektasi</p>
+        <p class="location">Prov. Jawa Tengah</p>
+        <span class="match-score">10% cocok</span>
+        <p class="date">14 Okt 2024</p>
+      </div>
+      <div class="job-card">
+        <h4>Area Sales Coordinator</h4>
+        <p>PT Smart Telecom</p>
+        <p class="salary">Gaji di atas ekspektasi</p>
+        <p class="location">Prov. Jawa Tengah</p>
+        <span class="match-score">10% cocok</span>
+        <p class="date">14 Okt 2024</p>
       </div>
     </div>
-    <div class="suitable-item">
-      <div class="content">
-        <h3>Hearing Impairment</h3>
-        <p>Roles suitable for individuals with hearing impairments.</p>
-      </div>
+  </div>
+@else
+    @foreach ($jobs as $job)
+    <a href="/jobs/{{ $job->JobID }}" class="job-highlight-section">
+    <div class="job-listings">
+        <div class="job-card">
+        <h4>{{ $job->Role }}</h4>
+        <p> <a href="/companies/{{ $job->company->CompanyID }}" class="company-link">
+            {{ $job->company->CompanyName ?? 'Unknown' }}
+        </a></p>
+        <p class="salary">{{ $job->SalaryMin }}</p>
+        {{-- <p class="location">Malang</p> --}}
+        {{-- <span class="match-score">10% cocok</span> --}}
+        <p class="date">{{ $job->company->CompanyName ?? 'Unknown' }}</p>
+        </div>
     </div>
-    <div class="suitable-item">
-      <div class="content">
-        <h3>Mobility Impairment</h3>
-        <p>Roles suitable for individuals with mobility impairments.</p>
-      </div>
-    </div>
-  </div> --}}
+    </a>
+    @endforeach
+@endif
 
+<script>
+const track = document.querySelector('.carousel-track');
+const slides = Array.from(track.children);
+const prevButton = document.getElementById('prev');
+const nextButton = document.getElementById('next');
 
-  @if ($jobs->isEmpty())
-      <div>no job</div>
-  @else
+let currentIndex = 0;
 
-  @endif
+function updateCarousel(index) {
+  const slideWidth = slides[0].getBoundingClientRect().width;
+  track.style.transform = `translateX(-${index * slideWidth}px)`;
+}
 
+prevButton.addEventListener('click', () => {
+  currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+  updateCarousel(currentIndex);
+});
 
+nextButton.addEventListener('click', () => {
+  currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+  updateCarousel(currentIndex);
+});
 
+window.addEventListener('resize', () => updateCarousel(currentIndex));
+</script>
 
+@endsection
 
-
-  <script>
-    const track = document.querySelector('.carousel-track');
-    const slides = Array.from(track.children);
-    const prevButton = document.getElementById('prev');
-    const nextButton = document.getElementById('next');
-
-    let currentIndex = 0;
-
-    function updateCarousel(index) {
-      const slideWidth = slides[0].getBoundingClientRect().width;
-      track.style.transform = `translateX(-${index * slideWidth}px)`;
-    }
-
-    prevButton.addEventListener('click', () => {
-      currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
-      updateCarousel(currentIndex);
-    });
-
-    nextButton.addEventListener('click', () => {
-      currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
-      updateCarousel(currentIndex);
-    });
-
-    window.addEventListener('resize', () => updateCarousel(currentIndex));
-  </script>
-
-</body>
-</html>
+{{-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head> --}}
