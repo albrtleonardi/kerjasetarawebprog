@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Companies; 
+use App\Models\Companies;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -10,7 +10,7 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
+
         $companies = Companies::when($search, function($query, $search) {
             $query->where('CompanyName', 'LIKE', "%{$search}%");
         })->get();
@@ -18,6 +18,23 @@ class CompanyController extends Controller
         return view('companies.index', compact('companies', 'search'));
     }
 
+    public function listing(Request $request)
+{
+    $search = $request->input('search');
+    $selectedCompanyId = $request->input('selected_company');
+
+    // Fetch companies with optional search
+    $companies = Companies::when($search, function ($query, $search) {
+        $query->where('CompanyName', 'LIKE', "%{$search}%");
+    })->paginate(3); // Paginate the list
+
+    // Fetch selected company details (if provided)
+    $selectedCompany = $selectedCompanyId
+        ? Companies::with('jobs')->where('CompanyID', $selectedCompanyId)->first()
+        : null;
+
+    return view('companies.listing', compact('companies', 'selectedCompany', 'search'));
+}
     public function showListCompanies()
     {
         $companies = Companies::all();
