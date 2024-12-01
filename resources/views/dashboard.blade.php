@@ -435,51 +435,20 @@
 </section> --}}
 
 @if ($roles->isEmpty())
-<div>no role</div>
-<section class="job-roles">
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Developer');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Developer</h3>
-    <p>Build and maintain software applications.</p>
-  </div>
-</div>
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Designer');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Designer</h3>
-    <p>Create visually appealing designs and layouts.</p>
-  </div>
-</div>
-<div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text=Manager');">
-  <div class="overlay"></div>
-  <div class="content">
-    <h3>Manager</h3>
-    <p>Oversee team operations and ensure project success.</p>
-  </div>
-</div>
-</section>
-@else <section class="job-roles">
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
-        <div class="overlay"></div>
-        <div class="content">
-            <h3>{{ $role->Role }}</h3>
+    <div>No role available</div>
+@else
+    <section class="job-roles">
+        @foreach ($roles as $role)
+        <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
+            <div class="overlay"></div>
+            <div class="content">
+                <h3>{{ $role->Role }}</h3>
+            </div>
         </div>
-    </div>
-</section>
-
-@foreach ($roles as $role)
-<section class="job-roles">
-    <div class="job-role" style="background-image: url('https://via.placeholder.com/400x200?text={{ $role->Role }}');">
-        <div class="overlay"></div>
-        <div class="content">
-            <h3>{{ $role->Role }}</h3>
-        </div>
-    </div>
-</section>
-@endforeach
-
+        @endforeach
+    </section>
 @endif
+
 
 
 
