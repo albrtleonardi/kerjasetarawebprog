@@ -92,6 +92,24 @@ class JobController extends Controller
         ]);
     }
 
+    public function listing(Request $request)
+{
+    $search = $request->input('search');
+    $selectedJobId = $request->input('selected_job');
+
+    // Fetch companies with optional search
+    $jobs = Jobs::when($search, function ($query, $search) {
+        $query->where('Role', 'LIKE', "%{$search}%");
+    })->paginate(3); // Paginate the list
+
+    // Fetch selected company details (if provided)
+    $selectedJob = $selectedJobId
+        ? Jobs::with('company')->where('JobID', $selectedJobId)->first()
+        : null;
+
+    return view('jobs.listing', compact('jobs', 'selectedJob', 'search'));
+}
+
     public function show($JobID)
     {
         $job = Jobs::with('company')->where('JobID', $JobID)->firstOrFail(); 
