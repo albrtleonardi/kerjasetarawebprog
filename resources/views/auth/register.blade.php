@@ -130,14 +130,14 @@
                         <form action="{{ route('register') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="username">Username</label>
+                                <label for="UserName">Nama Lengkap</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-transparent border-right-0">
                                             <i class="fas fa-user text-muted"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="UserName" id="username" class="form-control border-left-0" placeholder="Enter your username" required>
+                                    <input type="text" name="UserName" id="UserName" class="form-control border-left-0" placeholder="Enter your username" required>
                                 </div>
                             </div>
 

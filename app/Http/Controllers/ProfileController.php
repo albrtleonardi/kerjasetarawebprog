@@ -5,19 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
+    
+    
     public function edit()
     {
+        $user = Auth::user();
         $profile = Profile::firstOrCreate(['user_id' => Auth::id()]);
-
-        return view('profile.edit', compact('profile'));
+    
+        $profile->refresh();
+    
+        return view('profile.edit', compact('profile','user'));
     }
+    
 
-    public function update(Request $request)
+    public function update(Request $request)    
     {
-        $request->validate([
+        $data = $request->validate([
+            // 'NamaLengkap' => 'nullable|string|max:255',
+            'UserName' => 'required|string|max:255',
+            'Email' => 'required|email|max:255',
             'PhoneNumber' => 'nullable|string|max:15',
             'Country' => 'nullable|string|max:255',
             'Province' => 'nullable|string|max:255',
@@ -28,17 +38,9 @@ class ProfileController extends Controller
             'Description' => 'nullable|string|max:500',
             'SkillName' => 'nullable|string|max:255',
         ]);
+    
+    $user = Auth::user();
+    DB::table('users')->where('id', Auth::id())->update($data);
 
-        $profile = Auth::user()->profile;
-        $profile->update($request->all());
-
-        return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');
-    }
-
-    public function show()
-    {
-        $profile = Auth::user()->profile;
-
-        return view('profile.show', compact('profile'));
-    }
-}
+    return redirect()->route('profile.edit')->with('success', 'Profile updated successfully!');
+}}
