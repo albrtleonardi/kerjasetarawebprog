@@ -26,15 +26,21 @@ class CompanyController extends Controller
     // Fetch companies with optional search
     $companies = Companies::when($search, function ($query, $search) {
         $query->where('CompanyName', 'LIKE', "%{$search}%");
-    })->paginate(3); // Paginate the list
+    })->paginate(3);
 
     // Fetch selected company details (if provided)
     $selectedCompany = $selectedCompanyId
         ? Companies::with('jobs')->where('CompanyID', $selectedCompanyId)->first()
         : null;
 
-    return view('companies.listing', compact('companies', 'selectedCompany', 'search'));
+    // Return view with the query preserved for pagination
+    return view('companies.listing', [
+        'companies' => $companies->appends(['selected_company' => $selectedCompanyId, 'search' => $search]),
+        'selectedCompany' => $selectedCompany,
+        'search' => $search
+    ]);
 }
+
     public function showListCompanies()
     {
         $companies = Companies::all();

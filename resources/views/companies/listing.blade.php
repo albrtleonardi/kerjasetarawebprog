@@ -202,8 +202,13 @@
 
         companyContainers.forEach(container => {
             container.addEventListener('click', function () {
-                // Navigate to the URL stored in the data-url attribute
-                const url = this.dataset.url;
+                // Get the current search and pagination params
+                const searchParams = new URLSearchParams(window.location.search);
+                const search = searchParams.get('search') || '';
+                const page = searchParams.get('page') || '';
+
+                // Navigate to the URL with the selected_company ID and retain query params
+                const url = this.dataset.url + `&search=${search}&page=${page}`;
                 if (url) {
                     window.location.href = url;
                 }
@@ -211,5 +216,6 @@
         });
     });
 </script>
+
 
 @endsection
