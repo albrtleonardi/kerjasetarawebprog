@@ -20,36 +20,90 @@
     }
 
     /* Sidebar styles (Company Listings) */
-    .sidebar {
-        flex: 1;
-    }
+.sidebar {
+    margin: 0 auto;
+    max-width: 600px;
+}
 
-    .sidebar .company {
-        width: 100%;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background-color: #fff;
-        margin-bottom: 15px;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-    }
+.sidebar h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
 
-    .sidebar .company:hover {
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
+/* Company List Container */
+.sidebar .company {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #ddd; /* Border for the main clickable container */
+    border-radius: 8px;
+    background-color: #fff;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
 
-    .sidebar .company h5 {
-        margin: 0;
-        font-size: 1.2em;
-        color: #333;
-    }
+.sidebar .company:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-    .sidebar .company p {
-        margin: 5px 0;
-        color: #555;
-    }
+/* Top Section (Logo and Details) */
+.sidebar .company .top-section {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Company Logo */
+.sidebar .company .top-section .logo-container img {
+    width: 80px;
+    height: 60px;
+}
+
+/* Company Details */
+.sidebar .company .top-section .detailsSidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidebar .company .top-section .detailsSidebar h5 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.sidebar .company .top-section .detailsSidebar .industry {
+    font-size: 0.9em;
+    color: #0066cc;
+}
+
+.sidebar .company .top-section .detailsSidebar .location {
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Description Section */
+.sidebar .company .description {
+    margin-top: 10px;
+    font-size: 0.85em;
+    color: #555;
+    line-height: 1.4;
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Pagination */
+.sidebar .pagination {
+    margin-top: 20px;
+}
+
+
 
     /* Details section (Company Details) */
     .details {
@@ -126,27 +180,28 @@
         </form>
 
         @foreach ($companies as $company)
-            <div class="company clickable"
-                data-url="{{ route('companies.index', ['selected_company' => $company->CompanyID]) }}">
+        <div class="company clickable" data-url="{{ route('companies.index', ['selected_company' => $company->CompanyID]) }}">
+            <!-- Top Section -->
+            <div class="top-section">
+                <!-- Left Side (Company Image) -->
+                <div class="logo-container">
+                    <img src="{{ $company->CompanyImage ? asset($company->CompanyImage) : 'https://via.placeholder.com/60' }}"
+                        alt="{{ $company->CompanyName }} Logo">
+                </div>
 
-                <!-- Company Image -->
-                @if ($company->CompanyImage)
-                    <img src="{{ asset($company->CompanyImage) }}" alt="{{ $company->CompanyName }} Logo"
-                        class="company-image mb-2" style="max-height: 100px; width: auto;">
-                @else
-                    <img src="https://via.placeholder.com/100" alt="No Image Available"
-                        class="company-image mb-2" style="max-height: 100px; width: auto;">
-                @endif
-
-                <!-- Company Details -->
-                <h5>{{ $company->CompanyName }}</h5>
-                <p>{{ $company->Industry }} | {{ $company->CompanyCity }}</p>
-
-                <!-- Company Description (with a limit on the character length) -->
-                <p class="company-description">
-                    {{ Str::limit($company->CompanyDescription, 100, '...') }}
-                </p>
+                <!-- Right Side (Company Details) -->
+                <div class="detailsSidebar">
+                    <h5 class="company-name">{{ $company->CompanyName }}</h5>
+                    <p class="industry">{{ $company->Industry }}</p>
+                    <p class="location">{{ $company->CompanyCity }}</p>
+                </div>
             </div>
+
+            <!-- Description Section -->
+            <div class="description">
+                <p>{{ Str::limit($company->CompanyDescription, 80, '...') }}</p>
+            </div>
+        </div>
         @endforeach
 
         <!-- Pagination -->
