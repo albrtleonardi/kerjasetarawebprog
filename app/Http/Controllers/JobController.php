@@ -9,50 +9,50 @@ use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Jobs::with('company');
+    // public function index(Request $request)
+    // {
+    //     $query = Jobs::with('company');
     
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where('Role', 'LIKE', "%$search%")
-                  ->orWhereHas('company', function ($q) use ($search) {
-                      $q->where('CompanyName', 'LIKE', "%$search%");
-                  });
-        }
+    //     if ($request->filled('search')) {
+    //         $search = $request->input('search');
+    //         $query->where('Role', 'LIKE', "%$search%")
+    //               ->orWhereHas('company', function ($q) use ($search) {
+    //                   $q->where('CompanyName', 'LIKE', "%$search%");
+    //               });
+    //     }
     
-        if ($request->filled('job_type')) {
-            $query->where('JobType', $request->input('job_type'));
-        }
+    //     if ($request->filled('job_type')) {
+    //         $query->where('JobType', $request->input('job_type'));
+    //     }
     
-        if ($request->filled('remote_or_onsite')) {
-            $query->where('RemoteOrOnsite', $request->input('remote_or_onsite'));
-        }
+    //     if ($request->filled('remote_or_onsite')) {
+    //         $query->where('RemoteOrOnsite', $request->input('remote_or_onsite'));
+    //     }
     
-        if ($request->filled('career_level')) {
-            $query->where('CareerLevel', $request->input('career_level'));
-        }
+    //     if ($request->filled('career_level')) {
+    //         $query->where('CareerLevel', $request->input('career_level'));
+    //     }
     
-        if ($request->filled('suitable_for')) {
-            $suitableFor = $request->input('suitable_for');
-            $query->where(function($q) use ($suitableFor) {
-                foreach ($suitableFor as $option) {
-                    $q->orWhere('SuitableFor', 'LIKE', "%$option%");
-                }
-            });
-        }
+    //     if ($request->filled('suitable_for')) {
+    //         $suitableFor = $request->input('suitable_for');
+    //         $query->where(function($q) use ($suitableFor) {
+    //             foreach ($suitableFor as $option) {
+    //                 $q->orWhere('SuitableFor', 'LIKE', "%$option%");
+    //             }
+    //         });
+    //     }
     
-        if ($request->filled('salary_min')) {
-            $query->where('SalaryMin', '>=', $request->input('salary_min'));
-        }
-        if ($request->filled('salary_max')) {
-            $query->where('SalaryMax', '<=', $request->input('salary_max'));
-        }
+    //     if ($request->filled('salary_min')) {
+    //         $query->where('SalaryMin', '>=', $request->input('salary_min'));
+    //     }
+    //     if ($request->filled('salary_max')) {
+    //         $query->where('SalaryMax', '<=', $request->input('salary_max'));
+    //     }
     
-        $jobs = $query->get();
+    //     $jobs = $query->get();
     
-        return view('jobs.index', compact('jobs'));
-    }
+    //     return view('jobs.index', compact('jobs'));
+    // }
 
     public function recommendedJobs()
     {
@@ -93,28 +93,54 @@ class JobController extends Controller
     }
 
     public function listing(Request $request)
-{
-    $search = $request->input('search');
-    $selectedJobId = $request->input('selected_job');
-
-    // Fetch companies with optional search
-    $jobs = Jobs::when($search, function ($query, $search) {
-        $query->where('Role', 'LIKE', "%{$search}%");
-    })->paginate(3); // Paginate the list
-
-    // Fetch selected company details (if provided)
-    $selectedJob = $selectedJobId
-        ? Jobs::with('company')->where('JobID', $selectedJobId)->first()
-        : null;
-
-    return view('jobs.listing', compact('jobs', 'selectedJob', 'search'));
-}
-
-    public function show($JobID)
     {
-        $job = Jobs::with('company')->where('JobID', $JobID)->firstOrFail(); 
+        $search = $request->input('search');
+        $selectedJobId = $request->input('selected_job');
+        $query = Jobs::with('company')->distinct();
     
-        return view('jobs.show', compact('job'));
+        // Handle filtering logic
+        if ($request->filled('job_type')) {
+            $query->where('JobType', $request->input('job_type'));
+        }
+    
+        if ($request->filled('remote_or_onsite')) {
+            $query->where('RemoteOrOnsite', $request->input('remote_or_onsite'));
+        }
+    
+        if ($request->filled('career_level')) {
+            $query->where('CareerLevel', $request->input('career_level'));
+        }
+    
+        if ($request->filled('suitable_for')) {
+            $query->where('SuitableFor', $request->input('suitable_for'));
+        }
+    
+        
+    
+        if ($request->filled('search')) {
+            $query->where('Role', 'LIKE', "%{$search}%");
+        }
+    
+        // Paginate the jobs list
+        $jobs = $query->paginate(3);
+        $selectedJob = $selectedJobId
+            ? Jobs::with('company')->where('JobID', $selectedJobId)->first()
+            : null;
+    
+        return view('jobs.listing', [
+            'jobs' => $jobs->appends($request->all()),
+            'selectedJob' => $selectedJob,
+            'search' => $search
+        ]);
     }
+
+        public function show($JobID)
+        {
+            $job = Jobs::with('company')->where('JobID', $JobID)->firstOrFail(); 
+        
+            return view('jobs.show', compact('job'));
+        }
     
+
+
 }
