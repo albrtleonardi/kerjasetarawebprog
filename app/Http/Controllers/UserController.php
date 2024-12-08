@@ -71,50 +71,59 @@ class UserController extends Controller
     }
 
     public function dashboard()
-{
-    $user = Auth::user();
-    $profile = $user->profile;
-    $roles = Jobs::select('Role')->distinct()->get();
-    $jobs = Jobs::all();
-
-    $disabilities = ['Wheelchair', 'Deaf', 'Visual Impairment', 'Dyslexia', 'Hearing Impaired', 'Low Vision'];
-
-    if (!$profile || !$profile->Description || !$profile->SkillName) {
+    {
+        $user = Auth::user();
+        $profile = $user->profile;
+        $roles = Jobs::select('Role')->distinct()->get();
+        $jobs = Jobs::all();
+    
+        // Disability categories
+        $disabilities = ['Wheelchair', 'Deaf', 'Visual Impairment', 'Dyslexia', 'Hearing Impaired', 'Low Vision'];
+    
+        if (!$profile || !$profile->Description || !$profile->SkillName) {
+            return view('dashboard', [
+                'user' => $user,
+                'roles' => $roles,
+                'recommendedJobs' => collect(), // Empty collection to avoid errors
+                'disabilities' => $disabilities,
+                'jobs' => $jobs,
+            ]);
+        }
+    
+        // Normalize description for case-insensitive matching
+        $profileDescription = strtolower($profile->Description);
+    
+        // Filter disabilities from profile description (case insensitive)
+        $disabilityMatches = array_filter($disabilities, function($disability) use ($profileDescription) {
+            return stripos($profileDescription, strtolower($disability)) !== false;
+        });
+    
+        // Normalize skills (trim spaces and convert to lowercase for consistent comparison)
+        $skills = array_map('trim', explode(',', $profile->SkillName));
+        $skills = array_map('strtolower', $skills);
+    
+        // Query for recommended jobs based on disabilities and skills
+        $recommendedJobs = Jobs::where(function ($query) use ($disabilityMatches) {
+            foreach ($disabilityMatches as $disability) {
+                $query->orWhere('SuitableFor', 'LIKE', "%$disability%");
+            }
+        })
+        ->orWhere(function ($query) use ($skills) {
+            foreach ($skills as $skill) {
+                $query->orWhere('RequiredSkills', 'LIKE', "%$skill%");
+            }
+        })
+        ->get();
+    
         return view('dashboard', [
             'user' => $user,
             'roles' => $roles,
-            'recommendedJobs' => collect(), // Empty collection to avoid errors
+            'recommendedJobs' => $recommendedJobs,
             'disabilities' => $disabilities,
             'jobs' => $jobs,
         ]);
     }
-
-    $disabilityMatches = array_filter($disabilities, function($disability) use ($profile) {
-        return stripos($profile->Description, $disability) !== false;
-    });
-
-    $skills = array_map('trim', explode(',', $profile->SkillName));
-
-    $recommendedJobs = Jobs::where(function ($query) use ($disabilityMatches) {
-        foreach ($disabilityMatches as $disability) {
-            $query->orWhere('SuitableFor', 'LIKE', "%$disability%");
-        }
-    })
-    ->orWhere(function ($query) use ($skills) {
-        foreach ($skills as $skill) {
-            $query->orWhere('RequiredSkills', 'LIKE', "%$skill%");
-        }
-    })
-    ->get();
-
-    return view('dashboard', [
-        'user' => $user,
-        'roles' => $roles,
-        'recommendedJobs' => $recommendedJobs,
-        'disabilities' => $disabilities,
-        'jobs' => $jobs,
-    ]);
-}
+    
 
 public function jobs()
 {

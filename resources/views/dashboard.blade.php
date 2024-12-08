@@ -544,59 +544,63 @@
 <div class="container yeet">
 
 <div class="carousel">
-<div class="carousel-track">
-  <div class="carousel-slide">
-    <img src="images/banner.jpg" alt="Slide 1">
+  <div class="carousel-track">
+    <div class="carousel-slide">
+      <a href="/companies?selected_company=1&search=&page=">
+        <img src="images/banner.jpg" alt="Slide 1">
+      </a>
+    </div>
   </div>
 </div>
-</div>
+
 
 <div class="mt-5" style="background-color: #003366; color: white; padding: 20px; border-radius: 8px;">
-    <h2>Recommended Jobs for You</h2>
-    @if($recommendedJobs->isEmpty())
-        <p>No job recommendations available at this time.</p>
-    @else
-        <div class="row">
-            @foreach($recommendedJobs->take(3) as $job)
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body position-relative">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="logo-container">
-                                <img src="{{ $job->company->CompanyImage }}" alt="Company Logo" class="logo-company">
-                            </div>
+<h2>Recommended Jobs for You</h2>
+@if($recommendedJobs->isEmpty())
+    <p>No job recommendations available at this time.</p>
+@else
+    <div class="row">
+        @foreach($recommendedJobs->take(3) as $job)
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body position-relative">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="logo-container">
+                            <img src="{{ $job->company->CompanyImage }}" alt="Company Logo" class="logo-company">
                         </div>
-
-                        <h5 class="job-title fw-bold mb-1 text-dark">{{ $job->Role }}</h5>
-
-                        <p class="mb-1 text-primary">{{ $job->company->CompanyName ?? 'Unknown' }}</p>
-
-                        <p class="text-muted small mb-2">
-                            Industri: {{ $job->company->Industry ?? 'Tidak disebutkan' }}
-                        </p>
-
-                        <p class="text-muted small mb-2">
-                            Lokasi: {{ $job->company->CompanyCity ?? 'Tidak disebutkan' }}
-                        </p>
-
-                        <p class="text-muted small mb-2">
-                            Mode Kerja: {{ $job->RemoteOrOnsite ?? 'Tidak disebutkan' }}
-                        </p>
-
-                        <p class="text-muted small mb-2">
-                            Level Karir: {{ $job->CareerLevel ?? 'Tidak disebutkan' }}
-                        </p>
-
                     </div>
 
-                    <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
-                        <small class="text-muted">Diposting: {{ date('d M Y', strtotime($job->created_at)) }}</small>
-                    </div>
+                    <h5 class="job-title fw-bold mb-1 text-dark">{{ $job->Role }}</h5>
+
+                    <p class="mb-1 text-primary">{{ $job->company->CompanyName ?? 'Unknown' }}</p>
+
+                    <p class="text-muted small mb-2">
+                        Industri: {{ $job->company->Industry ?? 'Tidak disebutkan' }}
+                    </p>
+
+                    <p class="text-muted small mb-2">
+                        Lokasi: {{ $job->company->CompanyCity ?? 'Tidak disebutkan' }}
+                    </p>
+
+                    <p class="text-muted small mb-2">
+                        Mode Kerja: {{ $job->RemoteOrOnsite ?? 'Tidak disebutkan' }}
+                    </p>
+
+                    <p class="text-muted small mb-2">
+                        Level Karir: {{ $job->CareerLevel ?? 'Tidak disebutkan' }}
+                    </p>
+
+                </div>
+
+                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Diposting: {{ date('d M Y', strtotime($job->created_at)) }}</small>
                 </div>
             </div>
-            @endforeach
         </div>
-    @endif
+        @endforeach
+    </div>
+@endif
+
 </div>
 
 {{-- DISABILITIES --}}
@@ -607,23 +611,26 @@
 
 <div class="suitable-section grid-container">
     @foreach ($disabilities as $disability)
-    <div class="suitable-item glass-card">
-        <div class="content">
-            <h3>{{ $disability }}</h3>
-            <p>Posisi yang cocok untuk individu dengan disabilitas <strong>{{ strtolower($disability) }}</strong>.</p>
-        </div>
-    </div>
+        <a href="{{ url('/jobs') }}?suitable_for={{ urlencode($disability) }}" class="suitable-item glass-card">
+            <div class="content">
+                <h3>{{ $disability }}</h3>
+                <p>Posisi yang cocok untuk individu dengan disabilitas <strong>{{ strtolower($disability) }}</strong>.</p>
+            </div>
+        </a>
     @endforeach
 </div>
+
 
 
 <div class="container mt-4">
     <div class="row g-0 align-items-start">
         <!-- Banner Promotion on the Left -->
         <div class="col-md-6 d-flex align-items-center">
-            <div class="job-banner w-100">
-                <img src="images/banner-2.jpg" alt="Banner" class="img-fluid rounded">
-            </div>
+            <a href="{{ url('/companies?selected_company=5&search=&page=2') }}" class="w-100">
+                <div class="job-banner w-100">
+                    <img src="images/banner-2.jpg" alt="Banner" class="img-fluid rounded">
+                </div>
+            </a>
         </div>
 
         <!-- Job Cards and Title on the Right -->
@@ -643,24 +650,27 @@
                     <div class="row g-3">
                         @foreach ($jobs->take(4) as $job)
                             <div class="col-6">
-                                <div class="card h-100 shadow-sm">
-                                    <div class="card-body">
-                                        <h5 class="fw-bold">{{ $job->Role }}</h5>
-                                        <p class="text-primary">
-                                            <a href="/companies/{{ $job->company->CompanyID }}" class="text-primary">
-                                                {{ $job->company->CompanyName ?? 'Unknown' }}
-                                            </a>
-                                        </p>
-                                        <p class="text-success">Gaji di atas ekspektasi</p>
-                                        <p>{{ $job->Location ?? 'Lokasi tidak tersedia' }}</p>
+                                <!-- Job card wrapped in an anchor tag for redirection -->
+                                <a href="{{ url('/jobs/selected?selected_job=' . $job->JobID . '&page=1&search=&page=') }}" class="text-decoration-none">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="fw-bold">{{ $job->Role }}</h5>
+                                            <p class="text-primary">
+                                                <a href="/companies/{{ $job->company->CompanyID }}" class="text-primary">
+                                                    {{ $job->company->CompanyName ?? 'Unknown' }}
+                                                </a>
+                                            </p>
+                                            <p class="text-success">Gaji di atas ekspektasi</p>
+                                            <p>{{ $job->Location ?? 'Lokasi tidak tersedia' }}</p>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <span class="text-danger fw-bold">{{ $job->MatchPercentage ?? '10%' }} cocok</span>
+                                            <small class="text-muted">
+                                                {{ date('d M Y', strtotime($job->created_at)) }}
+                                            </small>
+                                        </div>
                                     </div>
-                                    <div class="card-footer d-flex justify-content-between">
-                                        <span class="text-danger fw-bold">{{ $job->MatchPercentage ?? '10%' }} cocok</span>
-                                        <small class="text-muted">
-                                            {{ date('d M Y', strtotime($job->created_at)) }}
-                                        </small>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         @endforeach
                     </div>
@@ -669,6 +679,7 @@
         </div>
     </div>
 </div>
+
 
 
 

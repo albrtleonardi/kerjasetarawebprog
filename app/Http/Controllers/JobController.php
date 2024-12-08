@@ -54,6 +54,20 @@ class JobController extends Controller
     //     return view('jobs.index', compact('jobs'));
     // }
 
+    // In JobsController
+public function index(Request $request)
+{
+    $suitableFor = $request->query('suitable_for');
+    
+    // You can filter the jobs based on the disability type here
+    $jobs = Job::when($suitableFor, function($query) use ($suitableFor) {
+        return $query->where('suitable_for', $suitableFor);
+    })->get();
+
+    return view('jobs.index', compact('jobs'));
+}
+
+
     public function recommendedJobs()
     {
         $user = Auth::user();
