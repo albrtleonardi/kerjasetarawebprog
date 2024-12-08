@@ -92,7 +92,7 @@
                 <!-- Profile Section with Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="https://via.placeholder.com/40" alt="Profile Picture" class="profile-img">
+                        <img src="{{ asset('storage/profilephoto/' . ($user->profile_photo ?? 'default.jpg')) }}" alt="Profile Picture" class="profile-img">
                         Hello, {{ $user->UserName }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">

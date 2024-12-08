@@ -25,14 +25,16 @@ class ProfileController extends Controller
         $request->validate([
             'UserName' => 'required|string|max:255',
             'Email' => 'required|email|max:255',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',  // Optional profile picture
+            'Photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',  // Optional profile picture
             'PhoneNumber' => 'nullable|string|max:15',
             'Address' => 'nullable|string|max:500',
             'Country' => 'nullable|string|max:100',
             'Province' => 'nullable|string|max:100',
             'City' => 'nullable|string|max:100',
             'DOB' => 'nullable|date',
-            'Gender' => 'nullable|string',
+            'Gender' => 'nullable|string|max:100',
+            'Description' => 'nullable|string|max:255',
+            'SkillName' => 'nullable|string|max:255',
         ]);
 
         // Update basic user details
@@ -45,24 +47,26 @@ class ProfileController extends Controller
         $user->City = $request->input('City');
         $user->DOB = $request->input('DOB');
         $user->Gender = $request->input('Gender');
+        $user->Description = $request->input('Description');
+        $user->SkillName = $request->input('SkillName');
+        
+        $user = auth()->user();  
 
-        // Handle profile photo update
-        if ($request->hasFile('photo')) {
-            // If there's an old profile photo, delete it
-            if ($user->profile_photo && Storage::exists('/public/profilephoto' . $user->profile_photo)) {
-                Storage::delete('/public/profilephoto' . $user->profile_photo);
+        if ($request->hasFile('Photo')) {
+            // Store the uploaded file
+            $filePath = $request->file('Photo')->store('profilephoto', 'public');
+    
+            // Delete the old photo if it's not the default
+            if ($user->profile_photo && $user->profile_photo !== 'default.jpg') {
+                Storage::disk('public')->delete('profilephoto/' . $user->profile_photo);
             }
-
-            // Store the new profile photo
-            $imageName = time() . '.' . $request->photo->extension();
-            $request->photo->storeAs('/public/profilephoto', $imageName);
-            $user->profile_photo = $imageName;
+    
+            // Update the user's profile photo in the database
+            $user->profile_photo = basename($filePath);
         }
-
-        // Save updated user profile
+    
         $user->save();
-
-        // Redirect back with a success message
-        return redirect()->route('profile.edit')->with('success', 'Profile successfully updated!');
+    
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 }

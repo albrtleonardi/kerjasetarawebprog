@@ -23,6 +23,8 @@ class User extends Authenticatable
         'City', 
         'DOB', 
         'Gender', 
+        'Description',
+        'SkillName',
         'profile_photo',
     ];
 
