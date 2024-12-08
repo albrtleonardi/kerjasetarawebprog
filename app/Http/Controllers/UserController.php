@@ -116,5 +116,11 @@ class UserController extends Controller
     ]);
 }
 
+public function jobs()
+{
+    $user = Auth::user(); // Get the authenticated user
+    return view('jobs.listing', compact('user')); // Pass it to the view
+}
+
 
 }

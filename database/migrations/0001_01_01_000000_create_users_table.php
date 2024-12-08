@@ -12,7 +12,7 @@ return new class extends Migration
             Schema::create('users', function (Blueprint $table) {
                 $table->id();  
                 $table->string('UserName');
-                $table->string('NamaLengkap');
+                $table->string('NamaLengkap')->nullable();
                 $table->string('Email')->unique();
                 $table->date('DOB')->nullable();
                 $table->string('PhoneNumber', 20)->nullable();

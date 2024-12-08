@@ -151,6 +151,7 @@
     </style>
 </head>
 <body>
+    
     <!-- New Profile Summary Section -->
     <div class="container profile-summary">
         <img src="https://via.placeholder.com/80" alt="Profile Picture">

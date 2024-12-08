@@ -1,4 +1,4 @@
-@extends('layouts.with_sidebar')
+@extends('layouts.usernavbar')
 
 @section('content')
 
