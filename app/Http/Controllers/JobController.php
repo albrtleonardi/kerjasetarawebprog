@@ -126,10 +126,21 @@ public function index(Request $request)
         }
     
         if ($request->filled('suitable_for')) {
-            $query->where('SuitableFor', $request->input('suitable_for'));
+            $suitableFor = $request->input('suitable_for');
+            $query->where(function ($q) use ($suitableFor) {
+                foreach ($suitableFor as $option) {
+                    $q->orWhere('SuitableFor', 'LIKE', "%{$option}%");
+                }
+            });
         }
     
-        
+        if ($request->filled('salary_min')) {
+            $query->where('SalaryMin', '>=', $request->input('salary_min'));
+        }
+    
+        if ($request->filled('salary_max')) {
+            $query->where('SalaryMax', '<=', $request->input('salary_max'));
+        }
     
         if ($request->filled('search')) {
             $query->where('Role', 'LIKE', "%{$search}%");

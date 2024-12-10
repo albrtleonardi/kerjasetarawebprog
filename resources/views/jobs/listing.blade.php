@@ -281,48 +281,91 @@
 </style>
 
 <div class="container my-4">
-    <!-- Filter Section -->
-    <form method="GET" action="{{ route('jobs.index') }}">
-        <div class="filter" style="display: flex; gap: 20px;">
-            <!-- Job Type Filter -->
-            <div class="col-md-3">
-                <select name="job_type" class="form-control">
-                    <option value="">Job Types</option>
-                    <option value="Full-time" {{ request('job_type') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
-                    <option value="Part-time" {{ request('job_type') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
-                    <option value="Contract" {{ request('job_type') == 'Contract' ? 'selected' : '' }}>Contract</option>
-                </select>
-            </div>
+  <!-- Filter Section -->
+  <form method="GET" action="{{ route('jobs.index') }}">
+    <div class="filter" style="display: flex;">
+      <!-- Job Type Filter -->
+      <div class="col-md-3" style="max-width: 150px;">
+        <select name="job_type" class="form-control">
+          <option value="">Job Types</option>
+          <option value="Full-time" {{ request('job_type') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
+          <option value="Part-time" {{ request('job_type') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
+          <option value="Contract" {{ request('job_type') == 'Contract' ? 'selected' : '' }}>Contract</option>
+        </select>
+      </div>
 
-            <!-- Remote/Onsite Filter -->
-            <div class="col-md-3">
-                <select name="remote_or_onsite" class="form-control">
-                    <option value="">Remote or Onsite</option>
-                    <option value="Remote" {{ request('remote_or_onsite') == 'Remote' ? 'selected' : '' }}>Remote</option>
-                    <option value="Onsite" {{ request('remote_or_onsite') == 'Onsite' ? 'selected' : '' }}>Onsite</option>
-                </select>
-            </div>
+      <!-- Remote/Onsite Filter -->
+      <div class="col-md-3"style="max-width: 150px;">
+        <select name="remote_or_onsite" class="form-control">
+          <option value="">Remote or Onsite</option>
+          <option value="Remote" {{ request('remote_or_onsite') == 'Remote' ? 'selected' : '' }}>Remote</option>
+          <option value="Onsite" {{ request('remote_or_onsite') == 'Onsite' ? 'selected' : '' }}>Onsite</option>
+        </select>
+      </div>
 
-            <!-- Career Level Filter -->
-            <div class="col-md-3">
-                <select name="career_level" class="form-control">
-                    <option value="">Career Level</option>
-                    <option value="Junior" {{ request('career_level') == 'Junior' ? 'selected' : '' }}>Junior</option>
-                    <option value="Mid-level" {{ request('career_level') == 'Mid-level' ? 'selected' : '' }}>Mid-level</option>
-                    <option value="Senior" {{ request('career_level') == 'Senior' ? 'selected' : '' }}>Senior</option>
-                </select>
-            </div>
+      <!-- Career Level Filter -->
+      <div class="col-md-3"style="max-width: 150px;">
+        <select name="career_level" class="form-control">
+          <option value="">Career Level</option>
+          <option value="Junior" {{ request('career_level') == 'Junior' ? 'selected' : '' }}>Junior</option>
+          <option value="Mid-level" {{ request('career_level') == 'Mid-level' ? 'selected' : '' }}>Mid-level</option>
+          <option value="Senior" {{ request('career_level') == 'Senior' ? 'selected' : '' }}>Senior</option>
+        </select>
+      </div>
 
-            <!-- Suitable for Filter -->
-            <div class="col-md-3">
-                <select name="suitable_for" class="form-control">
-                    <option value="">Disability</option>
-                    <option value="Wheelchair" {{ request('suitable_for') == 'Wheelchair' ? 'selected' : '' }}>Wheelchair</option>
-                    <option value="Deaf" {{ request('suitable_for') == 'Deaf' ? 'selected' : '' }}>Deaf</option>
-                    <option value="Visual Impairment" {{ request('suitable_for') == 'Visual Impairment' ? 'selected' : '' }}>Visual Impairment</option>
-                    <option value="Hearing Impaired" {{ request('suitable_for') == 'Hearing Impaired' ? 'selected' : '' }}>Hearing Impaired</option>
-                </select>
-            </div>
+      <!-- Suitable for Filter -->
+      {{-- <div class="col-md-3"style="max-width: 150px;">
+        <select name="suitable_for" class="form-control">
+          <option value="">Disability</option>
+          <option value="Wheelchair" {{ request('suitable_for') == 'Wheelchair' ? 'selected' : '' }}>Wheelchair</option>
+          <option value="Deaf" {{ request('suitable_for') == 'Deaf' ? 'selected' : '' }}>Deaf</option>
+          <option value="Visual Impairment" {{ request('suitable_for') == 'Visual Impairment' ? 'selected' : '' }}>Visual Impairment</option>
+          <option value="Hearing Impaired" {{ request('suitable_for') == 'Hearing Impaired' ? 'selected' : '' }}>Hearing Impaired</option>
+        </select>
+      </div> --}}
+
+      <div class="col-md-3"style="max-width: 150px;">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="suitableForDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Suitable for
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="suitableForDropdown" style="padding: 10px;">
+            <li>
+              <label class="form-check">
+                <input type="checkbox" name="suitable_for[]" value="Wheelchair" class="form-check-input" {{ in_array('Wheelchair', (array)request('suitable_for', [])) ? 'checked' : '' }}> Wheelchair
+              </label>
+            </li>
+            <li>
+              <label class="form-check">
+                <input type="checkbox" name="suitable_for[]" value="Deaf" class="form-check-input" {{ in_array('Deaf', (array)request('suitable_for', [])) ? 'checked' : '' }}> Deaf
+              </label>
+            </li>
+            <li>
+              <label class="form-check">
+                <input type="checkbox" name="suitable_for[]" value="Visual Impairment" class="form-check-input" {{ in_array('Visual Impairment', (array)request('suitable_for', [])) ? 'checked' : '' }}> Visual Impairment
+              </label>
+            </li>
+            <li>
+              <label class="form-check">
+                <input type="checkbox" name="suitable_for[]" value="Hearing Impaired" class="form-check-input" {{ in_array('Hearing Impaired', (array)request('suitable_for', [])) ? 'checked' : '' }}> Hearing Impaired
+              </label>
+            </li>
+            <li>
+              <label class="form-check">
+                <input type="checkbox" name="suitable_for[]" value="Dyslexia" class="form-check-input" {{ in_array('Dyslexia', (array)request('suitable_for', [])) ? 'checked' : '' }}> Dyslexia
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Salary Range Filter -->
+      <div class="col-md-3"style="max-width: 150px;">
+        <input type="number" name="salary_min" class="form-control" placeholder="Min Salary" value="{{ request('salary_min') }}">
+      </div>
+      <div class="col-md-3"style="max-width: 150px;">
+        <input type="number" name="salary_max" class="form-control" placeholder="Max Salary" value="{{ request('salary_max') }}">
+      </div>
 
             <button type="submit" class="btn btn-primary">Filter</button>
         </div>
