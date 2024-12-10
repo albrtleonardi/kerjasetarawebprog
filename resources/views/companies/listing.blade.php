@@ -5,11 +5,14 @@
 <head>
     <title>Company Listings</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     body {
     background-color: #eff7fe;
+    font-family: 'Poppins', sans-serif; /* Use Poppins font globally */
     margin-top: 2vh;
 }
 
@@ -131,6 +134,134 @@
         margin: 10px 0;
     }
 
+    /* 1st Container Styling */
+.container-1 {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nested-container-1 img {
+    max-width: 100%;
+    max-height: 150px;
+    border-radius: 8px;
+}
+
+.nested-container-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.nested-container-2 .company-name {
+    font-size: 1.5em;
+    margin: 0;
+    color: #333;
+}
+
+.nested-container-2 .company-address {
+    font-size: 1em;
+    color: #777;
+}
+
+/* 2nd Container Styling */
+.container-2 {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.container-2 h4 {
+  font-size: 18px;
+  color: #007bff; /* Blue color for the heading */
+  margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container-2 .info-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Enables wrapping for smaller screens */
+  gap: 20px; /* Adds spacing between items */
+}
+
+.container-2 .info-item {
+  flex: 1 1 calc(50% - 20px); /* Each item takes 50% width with space between */
+  min-width: 200px; /* Ensures a minimum width */
+}
+
+.container-2 .info-item strong {
+  display: block;
+  font-size: 14px;
+  color: #333333;
+  margin-bottom: 5px; /* Space between label and value */
+}
+
+.container-2 .info-item p,
+.container-2 .info-item a {
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.6;
+  word-wrap: break-word; /* Prevents long text (e.g., URLs) from overflowing */
+  font-family: 'Poppins', sans-serif;
+}
+
+.container-2 .info-item a {
+  color: #007bff; /* Blue color for links */
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container-2 .info-item a:hover {
+  text-decoration: underline; /* Add underline on hover */
+  font-family: 'Poppins', sans-serif;
+}
+
+
+/* 3rd Container Styling */
+.container-3 {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.container-3 h4 {
+  font-size: 18px;
+  color: #007bff; /* Blue color for the heading */
+  margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container-3 .info-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+  gap: 20px; /* Adds spacing between items */
+}
+
+.container-3 .info-item {
+  flex: 1 1 calc(50% - 20px); /* Each item takes up 50% width minus the gap */
+  min-width: 200px; /* Ensures a minimum width for smaller screens */
+}
+
+.container-3 .info-item strong {
+  display: block;
+  font-size: 14px;
+  color: #333333;
+  margin-bottom: 5px; /* Space between the label and query */
+  font-family: 'Poppins', sans-serif;
+}
+
+.container-3 .info-item p {
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.6;
+  font-family: 'Poppins', sans-serif;
+}
+
     /* Company clickable container */
     .company.clickable {
         cursor: pointer;
@@ -161,6 +292,91 @@
 
     .company-description:hover {
         max-height: none; /* Show full description on hover */
+    }
+
+    .container-4 {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 20px; /* Add spacing above */
+}
+
+.container-4 h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px; /* Adjusted spacing for better alignment */
+    color: #007bff; /* Blue color for the heading */
+    font-family: 'Poppins', sans-serif;
+}
+
+.company-logo-and-details {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem; /* Space between logo and details */
+    margin-bottom: 15px; /* Space after this section */
+}
+
+.company-logo {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.job-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.job-position h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #333333;
+}
+
+.company-name,
+.job-salary,
+.job-location {
+    margin: 0.3rem 0;
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.logo-img {
+    max-width: 50px;
+    max-height: 50px;
+    object-fit: cover;
+}
+
+.job-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.salary {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+
+.job-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    .job-card-link:hover .card {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
     }
 
 </style>
@@ -210,36 +426,135 @@
         </div>
     </div>
 
-    <!-- Details Section -->
+    <!-- Company Details Section -->
     <div class="details">
         @if ($selectedCompany)
-            <h1>{{ $selectedCompany->CompanyName }}</h1>
+            <!-- 1st Container -->
+            <div class="container-1 d-flex">
+                <!-- 1st Nested Container -->
+                <div class="nested-container-1 mr-4">
+                    @if ($selectedCompany->CompanyImage)
+                        <img src="{{ asset($selectedCompany->CompanyImage) }}"
+                             alt="{{ $selectedCompany->CompanyName }} Logo"
+                             class="img-fluid rounded"
+                             style="max-height: 150px;">
+                    @else
+                        <p class="text-muted">No Image Available</p>
+                    @endif
+                </div>
 
-            @if ($selectedCompany->CompanyImage)
-                <img src="{{ asset($selectedCompany->CompanyImage) }}" alt="{{ $selectedCompany->CompanyName }} Logo"
-                     class="img-fluid rounded mb-3" style="max-height: 150px;">
-            @else
-                <p class="text-muted">No Image Available</p>
-            @endif
+                <!-- 2nd Nested Container -->
+                <div class="nested-container-2">
+                    <h1 class="company-name">{{ $selectedCompany->CompanyName }}</h1>
+                    <p class="company-address text-muted">{{ $selectedCompany->Address }}, {{ $selectedCompany->CompanyCity }}</p>
+                </div>
+            </div>
 
-            <p><strong>Address:</strong> {{ $selectedCompany->Address }}</p>
-            <p><strong>Industry:</strong> {{ $selectedCompany->Industry }}</p>
-            <p><strong>Employee Count:</strong> {{ $selectedCompany->EmployeeCount }}</p>
-            <p><strong>Work Time:</strong> {{ $selectedCompany->WorkTime }}</p>
-            <p><strong>Dress Code:</strong> {{ $selectedCompany->DressCode }}</p>
-            <p><strong>Company Description:</strong> {{ $selectedCompany->CompanyDescription }}</p>
-            <p><strong>Company Website:</strong> <a href="{{ $selectedCompany->CompanyLink }}" target="_blank">
-                {{ $selectedCompany->CompanyLink }}</a></p>
-            <p><strong>City:</strong> {{ $selectedCompany->CompanyCity }}</p>
+            <div class="container-2 mt-4">
+                <h4>Company Information</h4>
+                <div class="info-wrapper">
+                    <!-- Industry -->
+                    <div class="info-item">
+                        <strong>Industry</strong>
+                        <p>{{ $selectedCompany->Industry }}</p>
+                    </div>
+                    <!-- Employee Count -->
+                    <div class="info-item">
+                        <strong>Employee Count</strong>
+                        <p>{{ $selectedCompany->EmployeeCount }}</p>
+                    </div>
+                    <!-- Dress Code -->
+                    <div class="info-item">
+                        <strong>Dress Code</strong>
+                        <p>{{ $selectedCompany->DressCode }}</p>
+                    </div>
+                    <!-- Work Time -->
+                    <div class="info-item">
+                        <strong>Work Time</strong>
+                        <p>{{ $selectedCompany->WorkTime }}</p>
+                    </div>
+                    <!-- Website -->
+                    <div class="info-item">
+                        <strong>Website</strong>
+                        <a href="{{ $selectedCompany->CompanyLink }}" target="_blank">
+                            {{ $selectedCompany->CompanyLink }}
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-            <h3 class="mt-4">Available Jobs at {{ $selectedCompany->CompanyName }}</h3>
-            <ul>
-                @forelse ($selectedCompany->jobs as $job)
-                    <li>{{ $job->Role }} - <a href="{{ route('jobs.show', $job->JobID) }}">View Job</a></li>
-                @empty
-                    <p>No jobs available at this company.</p>
-                @endforelse
-            </ul>
+
+            <!-- 3rd Container -->
+            <div class="container-3 mt-4">
+                <h4>Company Address</h4>
+                <div class="info-wrapper">
+                    <!-- City -->
+                    <div class="info-item">
+                        <strong>City</strong>
+                        <p>{{ $selectedCompany->CompanyCity }}</p>
+                    </div>
+                    <!-- Address -->
+                    <div class="info-item">
+                        <strong>Address</strong>
+                        <p>{{ $selectedCompany->Address }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 4th Container -->
+<div class="container-4">
+    <h4>Lowongan Kerja di {{ $selectedCompany->CompanyName }}</h4>
+    <div class="">
+        @forelse ($selectedCompany->jobs as $job)
+        <div class="">
+            <a href="{{ route('job.details', ['id' => $job->id]) }}" class="job-card-link">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Company Logo -->
+                        <div class="company-logo-card">
+                            <img src="{{ $selectedCompany->LogoUrl }}" alt="{{ $selectedCompany->CompanyName }} Logo" class="logo-img">
+                        </div>
+                        <!-- Job Details -->
+                        <h5 class="job-title-card">{{ $job->Role }}</h5>
+                        <p class="company-name-card"><strong>{{ $selectedCompany->CompanyName }}</strong></p>
+                        <p class="salary-card text-success">{{ $job->Salary }}</p>
+                        <p class="location-card">{{ $job->Location }} / {{ $selectedCompany->CompanyCity }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="date-posted-card text-muted">
+                            <small><i class="fa fa-clock-o"></i> {{ $job->PostedDate->format('d F Y') }}</small>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        @empty
+        <div class="">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Dummy Job Details -->
+                    <div class="company-logo-card">
+                        <img src="https://via.placeholder.com/60" alt="Dummy Logo" class="logo-img">
+                    </div>
+                    <h5 class="job-title-card">Software Developer</h5>
+                    <p class="company-name-card"><strong>{{ $selectedCompany->CompanyName }}</strong></p>
+                    <p class="salary-card text-success">$50,000 - $60,000</p>
+                    <p class="location-card">{{ $selectedCompany->CompanyCity }}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="date-posted-card text-muted">
+                        <small><i class="fa fa-clock-o"></i> January 15, 2024</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforelse
+    </div>
+</div>
+
+
+
         @else
             <p>Select a company to view its details.</p>
         @endif
