@@ -379,6 +379,105 @@
         transform: translateY(-5px);
     }
 
+    .container-4 {
+    padding: 20px;
+}
+
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Changed to 2 columns */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.job-card {
+    height: 100%; /* Ensure full height */
+}
+
+.job-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%; /* Ensure full height */
+}
+
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure full height */
+}
+
+.card-body {
+    flex: 1; /* Allow card body to grow */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.company-logo-card {
+    margin-bottom: 15px;
+}
+
+.logo-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.job-title-card {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.company-name-card {
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.salary-card {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #28a745;
+}
+
+.location-card {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    padding: 12px 20px;
+    margin-top: auto; /* Push footer to bottom */
+}
+
+.date-posted-card {
+    font-size: 0.85rem;
+}
+
+.no-jobs-card {
+    grid-column: span 2; /* Span both columns */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .jobs-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+    
+    .no-jobs-card {
+        grid-column: 1;
+    }
+}
+
 </style>
 
 <div class="container my-4">
@@ -503,49 +602,45 @@
 
 
             <!-- 4th Container -->
-<div class="container-4">
-    <h4>Lowongan Kerja di {{ $selectedCompany->CompanyName }}</h4>
-    <div class="">
+            <div class="container-4">
+    <h4>Jobs at {{ $selectedCompany->CompanyName }}</h4>
+    <div class="jobs-grid">
         @forelse ($selectedCompany->jobs as $job)
-        <div class="">
-            <a href="{{ route('job.details', ['id' => $job->id]) }}" class="job-card-link">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Company Logo -->
+        <div class="job-card">
+        <a href="{{ url('jobs') }}?selected_job={{ $job->JobID }}&page={{ request('page') }}&search={{ request('search', '') }}" class="job-card-link">
+        <div class="card h-100"> <!-- Added h-100 class -->
+                    <div class="card-body d-flex flex-column"> <!-- Added flex classes -->
                         <div class="company-logo-card">
-                            <img src="{{ $selectedCompany->LogoUrl }}" alt="{{ $selectedCompany->CompanyName }} Logo" class="logo-img">
+                            @if($selectedCompany->CompanyImage)
+                                <img src="{{ $selectedCompany->CompanyImage }}" 
+                                     alt="{{ $selectedCompany->CompanyName }} Logo" 
+                                     class="logo-img">
+                            @else
+                                <img src="https://via.placeholder.com/60" 
+                                     alt="Default Logo" 
+                                     class="logo-img">
+                            @endif
                         </div>
-                        <!-- Job Details -->
                         <h5 class="job-title-card">{{ $job->Role }}</h5>
                         <p class="company-name-card"><strong>{{ $selectedCompany->CompanyName }}</strong></p>
                         <p class="salary-card text-success">{{ $job->Salary }}</p>
-                        <p class="location-card">{{ $job->Location }} / {{ $selectedCompany->CompanyCity }}</p>
+                        <p class="location-card mb-auto">{{ $job->Location }} / {{ $selectedCompany->CompanyCity }}</p>
                     </div>
                     <div class="card-footer">
                         <div class="date-posted-card text-muted">
-                            <small><i class="fa fa-clock-o"></i> {{ $job->PostedDate->format('d F Y') }}</small>
+                            <small><i class="fa fa-clock-o"></i> {{ \Carbon\Carbon::parse($job->PostedDate)->format('d F Y') }}</small>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
         @empty
-        <div class="">
+        <div class="no-jobs-card">
             <div class="card">
-                <div class="card-body">
-                    <!-- Dummy Job Details -->
-                    <div class="company-logo-card">
-                        <img src="https://via.placeholder.com/60" alt="Dummy Logo" class="logo-img">
-                    </div>
-                    <h5 class="job-title-card">Software Developer</h5>
-                    <p class="company-name-card"><strong>{{ $selectedCompany->CompanyName }}</strong></p>
-                    <p class="salary-card text-success">$50,000 - $60,000</p>
-                    <p class="location-card">{{ $selectedCompany->CompanyCity }}</p>
-                </div>
-                <div class="card-footer">
-                    <div class="date-posted-card text-muted">
-                        <small><i class="fa fa-clock-o"></i> January 15, 2024</small>
-                    </div>
+                <div class="card-body text-center">
+                    <i class="fa fa-briefcase fa-3x mb-3 text-muted"></i>
+                    <h5>No Jobs Available</h5>
+                    <p class="text-muted">Currently there are no job openings at {{ $selectedCompany->CompanyName }}</p>
                 </div>
             </div>
         </div>

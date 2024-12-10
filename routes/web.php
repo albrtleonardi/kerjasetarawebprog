@@ -23,7 +23,6 @@ Route::get('/jobs', [JobController::class, 'listing'])->name('jobs.index');
 
 // Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
 Route::get('/companies', [CompanyController::class, 'listing'])->name('companies.index');
-
 Route::get('/', [CompanyController::class, 'showListCompanies'])->name('home');
 
 Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware('auth')->name('dashboard');

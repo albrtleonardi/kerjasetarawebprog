@@ -555,51 +555,55 @@
 
 
 <div class="mt-5" style="background-color: #003366; color: white; padding: 20px; border-radius: 8px;">
-<h2>Recommended Jobs for You</h2>
-@if($recommendedJobs->isEmpty())
-    <p>No job recommendations available at this time.</p>
-@else
-    <div class="row">
-        @foreach($recommendedJobs->take(3) as $job)
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body position-relative">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="logo-container">
-                            <img src="{{ $job->company->CompanyImage }}" alt="Company Logo" class="logo-company">
+    <h2>Recommended Jobs for You</h2>
+    @if($recommendedJobs->isEmpty())
+        <p>No job recommendations available at this time.</p>
+    @else
+        <div class="row">
+            @foreach($recommendedJobs->take(3) as $job)
+            <div class="col-md-4 mb-4">
+            <a href="{{ url('jobs') }}?selected_job={{ $job->JobID }}&page={{ request('page', 1) }}&search={{ request('search', '') }}" class="job-card-link">
+            class="text-decoration-none">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body position-relative">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="logo-container">
+                                    <img src="{{ $job->company->CompanyImage }}" alt="Company Logo" class="logo-company">
+                                </div>
+                            </div>
+
+                            <h5 class="job-title fw-bold mb-1 text-dark">{{ $job->Role }}</h5>
+
+                            <p class="mb-1 text-primary">{{ $job->company->CompanyName ?? 'Unknown' }}</p>
+
+                            <p class="text-muted small mb-2">
+                                Industri: {{ $job->company->Industry ?? 'Tidak disebutkan' }}
+                            </p>
+
+                            <p class="text-muted small mb-2">
+                                Lokasi: {{ $job->company->CompanyCity ?? 'Tidak disebutkan' }}
+                            </p>
+
+                            <p class="text-muted small mb-2">
+                                Mode Kerja: {{ $job->RemoteOrOnsite ?? 'Tidak disebutkan' }}
+                            </p>
+
+                            <p class="text-muted small mb-2">
+                                Level Karir: {{ $job->CareerLevel ?? 'Tidak disebutkan' }}
+                            </p>
+                        </div>
+
+                        <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Diposting: {{ date('d M Y', strtotime($job->created_at)) }}</small>
                         </div>
                     </div>
-
-                    <h5 class="job-title fw-bold mb-1 text-dark">{{ $job->Role }}</h5>
-
-                    <p class="mb-1 text-primary">{{ $job->company->CompanyName ?? 'Unknown' }}</p>
-
-                    <p class="text-muted small mb-2">
-                        Industri: {{ $job->company->Industry ?? 'Tidak disebutkan' }}
-                    </p>
-
-                    <p class="text-muted small mb-2">
-                        Lokasi: {{ $job->company->CompanyCity ?? 'Tidak disebutkan' }}
-                    </p>
-
-                    <p class="text-muted small mb-2">
-                        Mode Kerja: {{ $job->RemoteOrOnsite ?? 'Tidak disebutkan' }}
-                    </p>
-
-                    <p class="text-muted small mb-2">
-                        Level Karir: {{ $job->CareerLevel ?? 'Tidak disebutkan' }}
-                    </p>
-
-                </div>
-
-                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
-                    <small class="text-muted">Diposting: {{ date('d M Y', strtotime($job->created_at)) }}</small>
-                </div>
+                </a>
             </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
-@endif
+    @endif
+</div>
+
 
 </div>
 
@@ -611,7 +615,7 @@
 
 <div class="suitable-section grid-container">
     @foreach ($disabilities as $disability)
-        <a href="{{ url('/jobs') }}?suitable_for={{ urlencode($disability) }}" class="suitable-item glass-card">
+<a href="{{ url('/jobs') }}?job_type=&remote_or_onsite=&career_level=&suitable_for%5B%5D={{ urlencode($disability) }}&salary_min=&salary_max=" class="suitable-item glass-card">
             <div class="content">
                 <h3>{{ $disability }}</h3>
                 <p>Posisi yang cocok untuk individu dengan disabilitas <strong>{{ strtolower($disability) }}</strong>.</p>
@@ -651,8 +655,8 @@
                         @foreach ($jobs->take(4) as $job)
                             <div class="col-6">
                                 <!-- Job card wrapped in an anchor tag for redirection -->
-                                <a href="{{ url('/jobs/selected?selected_job=' . $job->JobID . '&page=1&search=&page=') }}" class="text-decoration-none">
-                                    <div class="card h-100 shadow-sm">
+                                <a href="{{ url('jobs') }}?selected_job={{ $job->JobID }}&page={{ request('page', 1) }}&search={{ request('search', '') }}" class="job-card-link">
+                                <div class="card h-100 shadow-sm">
                                         <div class="card-body">
                                             <h5 class="fw-bold">{{ $job->Role }}</h5>
                                             <p class="text-primary">

@@ -143,6 +143,9 @@
 </head>
 
 <body>
+    <div class="container mt-3">
+        <a href="{{ url('/dashboard') }}" class="btn btn-outline-primary">← Back to Home</a>
+    </div>
 
     <!-- Profile Summary Section -->
     <div class="container profile-summary">
